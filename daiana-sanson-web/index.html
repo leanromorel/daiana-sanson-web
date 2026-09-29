@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -21,6 +21,7 @@
           azalea: '#F7C9D4',
           sky: '#C8D9E6',
           beige: '#F5EFEB',
+          flash: '#FF4F81',
         },
         fontFamily: {
           serif: ['Fraunces', 'serif'],
@@ -33,35 +34,35 @@
 
 <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-beige text-navy font-sans">
+<body class="bg-navy text-navy font-sans overflow-x-hidden">
 
 <!-- ===== NAVBAR ===== -->
-<header class="flex items-center justify-between px-6 md:px-16 py-6 md:py-7">
+<header id="site-header" class="sticky top-0 z-40 flex items-center justify-between px-6 md:px-16 py-6 md:py-7 transition-all duration-300 text-beige">
   <a href="#inicio" id="brand-name" class="font-serif text-xl md:text-2xl font-semibold tracking-tight">Daiana Sanson</a>
 
   <nav class="hidden md:flex items-center gap-10 text-[15px] font-medium">
-    <a href="#inicio" class="hover:underline">Inicio</a>
-    <a href="#servicios" class="hover:underline">Asesorías</a>
-    <a href="#tienda" class="hover:underline">Tienda</a>
-    <a href="#suplementos" class="hover:underline">Suplementos</a>
-    <a href="#sobre-mi" class="hover:underline">Sobre mí</a>
-    <a href="#contacto" class="hover:underline">Contacto</a>
+    <a href="#inicio" class="nav-link">Inicio</a>
+    <a href="#servicios" class="nav-link">Asesorías</a>
+    <a href="#tienda" class="nav-link">Tienda</a>
+    <a href="#suplementos" class="nav-link">Suplementos</a>
+    <a href="#sobre-mi" class="nav-link">Sobre mí</a>
+    <a href="#contacto" class="nav-link">Contacto</a>
   </nav>
 
   <a id="whatsapp-nav-btn" href="#" target="_blank" rel="noopener"
-     class="hidden md:inline-flex items-center gap-2 bg-navy text-beige rounded-full px-5 py-3 text-[15px] font-semibold hover:bg-[#1C2735] transition-colors">
+     class="hidden md:inline-flex items-center gap-2 bg-beige text-navy rounded-full px-5 py-3 text-[15px] font-semibold hover:bg-flash hover:text-white transition-colors duration-200">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L4 20l1.1-4.4A8.5 8.5 0 1 1 21 11.5Z"/></svg>
     WhatsApp
   </a>
 
   <button id="menu-btn" type="button" aria-label="Abrir menú" aria-expanded="false"
-          class="md:hidden w-11 h-11 rounded-xl border border-navy/20 flex items-center justify-center shrink-0">
+          class="md:hidden w-11 h-11 rounded-xl border border-beige/25 flex items-center justify-center shrink-0 text-beige">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
 </header>
 
 <!-- Menú mobile -->
-<div id="mobile-menu" class="hidden md:hidden flex-col gap-4 px-6 pb-6 text-[15px] font-medium">
+<div id="mobile-menu" class="hidden md:hidden flex-col gap-4 px-6 pb-6 text-[15px] font-medium bg-navy text-beige relative z-30">
   <a href="#inicio" class="py-1">Inicio</a>
   <a href="#servicios" class="py-1">Asesorías</a>
   <a href="#tienda" class="py-1">Tienda</a>
@@ -69,62 +70,183 @@
   <a href="#sobre-mi" class="py-1">Sobre mí</a>
   <a href="#contacto" class="py-1">Contacto</a>
   <a id="whatsapp-mobile-btn" href="#" target="_blank" rel="noopener"
-     class="bg-navy text-beige rounded-full text-center py-3 font-semibold mt-1">Hablar por WhatsApp</a>
+     class="bg-gradient-to-r from-flash to-[#FF2D6B] text-white rounded-full text-center py-3 font-semibold mt-1">Hablar por WhatsApp</a>
 </div>
 
 <main>
 
-  <!-- ===== HERO ===== -->
-  <section id="inicio" class="flex flex-col md:flex-row items-center gap-10 md:gap-16 px-6 md:px-16 pt-2 md:pt-8 pb-16 md:pb-24">
+  <!-- ===== HERO (navy) ===== -->
+  <section id="inicio" class="relative overflow-hidden bg-gradient-to-b from-navy to-[#1B2838] text-beige flex flex-col md:flex-row items-center gap-14 md:gap-16 px-6 md:px-16 pt-6 md:pt-10 pb-20 md:pb-28">
     <div class="flex-1 flex flex-col gap-6 md:gap-7 max-w-xl">
-      <span class="text-xs font-semibold tracking-[2px] uppercase text-navy/60">Personal Trainer</span>
-      <h1 id="hero-title" class="font-serif text-4xl md:text-6xl font-semibold leading-[1.1]" style="white-space:pre-line;"></h1>
-      <p id="hero-subtitle" class="text-base md:text-lg leading-relaxed text-navy/75 max-w-md"></p>
-      <div class="flex flex-wrap gap-4">
-        <a href="#servicios" class="bg-navy text-beige rounded-full px-7 py-4 text-[15px] md:text-base font-semibold hover:bg-[#1C2735] transition-colors text-center">Ver asesorías</a>
+      <span class="animate-[fadeInUp_0.6s_ease-out_both] inline-flex w-fit items-center gap-2 bg-gradient-to-r from-flash to-[#FF2D6B] text-white text-xs font-semibold tracking-[2px] uppercase px-4 py-1.5 rounded-full">
+        Personal Trainer
+      </span>
+      <h1 id="hero-title" class="animate-[fadeInUp_0.6s_ease-out_0.08s_both] font-serif text-4xl md:text-6xl font-semibold leading-[1.1] text-beige" style="white-space:pre-line;"></h1>
+      <p id="hero-subtitle" class="animate-[fadeInUp_0.6s_ease-out_0.16s_both] text-base md:text-lg leading-relaxed text-beige/75 max-w-md"></p>
+      <div class="animate-[fadeInUp_0.6s_ease-out_0.24s_both] flex flex-wrap gap-4">
+        <a href="#servicios" class="bg-gradient-to-r from-flash to-[#FF2D6B] text-white rounded-full px-7 py-4 text-[15px] md:text-base font-semibold shadow-[0_10px_28px_-6px_rgba(255,45,107,0.55)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_-6px_rgba(255,45,107,0.7)] transition-all duration-200 text-center">Ver asesorías</a>
         <a id="whatsapp-hero-btn" href="#" target="_blank" rel="noopener"
-           class="border-[1.5px] border-navy text-navy rounded-full px-7 py-4 text-[15px] md:text-base font-semibold hover:bg-navy hover:text-beige transition-colors text-center">Hablar por WhatsApp</a>
+           class="border-[1.5px] border-beige/40 text-beige rounded-full px-7 py-4 text-[15px] md:text-base font-semibold hover:bg-beige hover:text-navy hover:border-beige transition-colors duration-200 text-center">Hablar por WhatsApp</a>
       </div>
     </div>
 
-    <div class="flex-shrink-0 relative w-full max-w-[440px] aspect-[440/560]">
-      <div class="absolute top-4 -left-4 w-full h-full bg-sky rounded-[28px]"></div>
-      <div class="relative w-full h-full bg-azalea rounded-[28px] flex items-center justify-center overflow-hidden">
-        <img id="hero-photo" src="" alt="Daiana Sanson" class="hidden w-full h-full object-cover" />
-        <span id="hero-photo-placeholder" class="font-serif text-navy/50 text-base px-6 text-center">[Foto de Daiana]</span>
+    <div class="animate-[fadeInUp_0.7s_ease-out_0.3s_both] flex-shrink-0 relative w-full max-w-[420px] mt-10 md:mt-0">
+      <div class="hero-glow absolute -inset-10 md:-inset-16 rounded-full pointer-events-none"></div>
+
+      <div class="relative flex flex-col gap-4 py-2">
+        <div class="self-start max-w-[290px] bg-gradient-to-br from-sky to-azalea rounded-3xl p-5 flex items-center gap-3.5 shadow-xl rotate-[-3deg]">
+          <span class="text-2xl shrink-0">🏋🏻‍♀️</span>
+          <span class="text-navy text-sm font-semibold leading-snug">Rutina 100% personalizada, online o presencial</span>
+        </div>
+
+        <div class="self-end max-w-[290px] bg-white rounded-3xl p-5 flex items-center gap-3.5 shadow-xl rotate-[2deg]">
+          <span class="text-2xl shrink-0">📈</span>
+          <span class="text-navy text-sm font-semibold leading-snug">Seguimiento y ajuste cada 4 semanas</span>
+        </div>
+
+        <div class="self-start max-w-[290px] bg-gradient-to-br from-flash to-[#FF2D6B] rounded-3xl p-5 flex items-center gap-3.5 shadow-xl rotate-[-1.5deg]">
+          <span class="text-2xl shrink-0">💬</span>
+          <span class="text-white text-sm font-semibold leading-snug">Soporte y pago simple por WhatsApp</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== SERVICIOS ===== -->
-  <section id="servicios" class="bg-white px-6 md:px-16 py-16 md:py-24 flex flex-col gap-10 md:gap-12">
+  <!-- ===== CINTA ANIMADA ===== -->
+  <div class="relative -mt-6 md:-mt-8 z-10 overflow-hidden bg-gradient-to-r from-[#FF2D6B] via-flash to-[#FF2D6B] py-3.5 md:py-4 shadow-[0_12px_30px_-14px_rgba(255,45,107,0.7)]">
+    <div id="marquee-track" class="marquee-track items-center gap-10 whitespace-nowrap text-white font-semibold text-sm md:text-base tracking-wide uppercase">
+      <!-- se genera desde js/database.js -->
+    </div>
+  </div>
+
+  <!-- ===== SERVICIOS (claro) ===== -->
+  <section id="servicios" class="bg-gradient-to-b from-white to-beige px-6 md:px-16 pt-16 md:pt-24 pb-16 md:pb-24 flex flex-col gap-10 md:gap-12">
     <div class="max-w-xl flex flex-col gap-3">
       <span class="text-xs font-semibold tracking-[2px] uppercase text-navy/60">Todo en un solo lugar</span>
-      <h2 class="font-serif text-3xl md:text-4xl font-semibold">Mis servicios</h2>
+      <h2 class="font-serif text-3xl md:text-4xl font-semibold text-navy">Mis servicios</h2>
     </div>
     <div id="services-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
       <!-- las tarjetas se generan desde js/database.js -->
     </div>
   </section>
 
-  <!-- ===== SOBRE MI ===== -->
-  <section id="sobre-mi" class="flex flex-col md:flex-row items-center gap-10 md:gap-16 px-6 md:px-16 py-16 md:py-24">
-    <div class="flex-shrink-0 w-full md:w-[380px] h-[300px] md:h-[460px] bg-sky rounded-3xl flex items-center justify-center overflow-hidden">
-      <img id="about-photo" src="" alt="Daiana Sanson" class="hidden w-full h-full object-cover" />
-      <span id="about-photo-placeholder" class="font-serif text-navy/50 text-sm px-6 text-center">[Foto de Daiana]</span>
+  <!-- ===== ASESORÍA ONLINE (navy) ===== -->
+  <section id="asesoria-online" class="relative overflow-hidden bg-gradient-to-b from-[#1B2838] to-navy text-beige px-6 md:px-16 py-16 md:py-24 flex flex-col lg:flex-row gap-12 lg:gap-16">
+    <div data-reveal class="flex-1 flex flex-col gap-5 max-w-xl">
+      <span class="inline-flex w-fit items-center gap-2 bg-gradient-to-r from-flash to-[#FF2D6B] text-white text-xs font-semibold tracking-[2px] uppercase px-4 py-1.5 rounded-full">Asesoría online</span>
+      <h2 id="online-title" class="font-serif text-2xl md:text-4xl font-semibold leading-tight text-beige"></h2>
+      <p id="online-description" class="text-base leading-relaxed text-beige/75"></p>
+
+      <ul id="online-includes" class="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-[14.5px] text-beige/85 mt-2">
+        <!-- se genera desde js/database.js -->
+      </ul>
+
+      <p id="online-closing" class="text-[14.5px] leading-relaxed text-beige/60 italic mt-2"></p>
+
+      <div class="flex flex-wrap items-center gap-4 mt-2">
+        <a id="whatsapp-online-btn" href="#" target="_blank" rel="noopener"
+           class="inline-flex bg-gradient-to-r from-flash to-[#FF2D6B] text-white rounded-full px-7 py-4 text-[15px] font-semibold shadow-[0_10px_28px_-6px_rgba(255,45,107,0.55)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_-6px_rgba(255,45,107,0.7)] transition-all duration-200">
+          Quiero empezar
+        </a>
+        <a id="mercadopago-btn" href="#" target="_blank" rel="noopener"
+           class="hidden items-center gap-2 border-[1.5px] border-beige/40 text-beige rounded-full px-7 py-4 text-[15px] font-semibold hover:bg-beige hover:text-navy hover:border-beige transition-colors duration-200">
+          Pagar con Mercado Pago
+        </a>
+      </div>
     </div>
-    <div class="flex-1 flex flex-col gap-5 max-w-xl">
-      <span class="text-xs font-semibold tracking-[2px] uppercase text-navy/60">Sobre mí</span>
-      <h2 class="font-serif text-2xl md:text-4xl font-semibold leading-tight">Formación y filosofía de entrenamiento</h2>
-      <p id="about-bio" class="text-base leading-relaxed text-navy/75"></p>
-      <a href="#contacto" class="self-start border-[1.5px] border-navy text-navy rounded-full px-6 py-3.5 text-[15px] font-semibold hover:bg-navy hover:text-beige transition-colors">Conocer más</a>
+
+    <div data-reveal style="transition-delay:120ms" class="flex-shrink-0 w-full lg:w-[320px] flex flex-col gap-5">
+      <div class="rounded-3xl bg-gradient-to-br from-flash to-[#FF2D6B] p-7 flex flex-col gap-1 shadow-[0_16px_40px_-14px_rgba(255,45,107,0.55)]">
+        <span class="text-xs font-semibold tracking-[2px] uppercase text-white/80">Inversión</span>
+        <span id="online-price" class="font-serif text-4xl font-semibold text-white"></span>
+        <span id="online-price-label" class="text-sm text-white/80"></span>
+      </div>
+
+      <div class="rounded-3xl bg-white/5 border border-beige/15 p-6 flex flex-col gap-4">
+        <span class="text-xs font-semibold tracking-[2px] uppercase text-beige/60">Medios de pago</span>
+        <div id="payment-methods" class="flex flex-col gap-4 text-[13.5px] text-beige/80">
+          <!-- se genera desde js/database.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ASESORÍA PRESENCIAL (claro) ===== -->
+  <section id="asesoria-presencial" class="bg-gradient-to-b from-beige to-white px-6 md:px-16 py-16 md:py-24 flex flex-col lg:flex-row gap-12 lg:gap-16">
+    <div data-reveal class="flex-1 flex flex-col gap-5 max-w-xl">
+      <span class="inline-flex w-fit items-center gap-2 bg-gradient-to-r from-flash to-[#FF2D6B] text-white text-xs font-semibold tracking-[2px] uppercase px-4 py-1.5 rounded-full">Asesoría presencial</span>
+      <h2 class="font-serif text-2xl md:text-4xl font-semibold leading-tight text-navy">Entrenamientos presenciales</h2>
+      <p id="presencial-description" class="text-base leading-relaxed text-navy/70"></p>
+
+      <ul id="presencial-includes" class="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-[14.5px] text-navy/80 mt-2">
+        <!-- se genera desde js/database.js -->
+      </ul>
+
+      <p id="presencial-closing" class="text-[14.5px] leading-relaxed text-navy/55 italic mt-2"></p>
+      <p id="presencial-cta-note" class="text-[14.5px] leading-relaxed text-navy/80 font-medium"></p>
+
+      <div class="mt-1">
+        <a id="whatsapp-presencial-btn" href="#" target="_blank" rel="noopener"
+           class="inline-flex bg-gradient-to-r from-flash to-[#FF2D6B] text-white rounded-full px-7 py-4 text-[15px] font-semibold shadow-[0_10px_28px_-6px_rgba(255,45,107,0.4)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_-6px_rgba(255,45,107,0.55)] transition-all duration-200">
+          Coordinar mi primer entrenamiento
+        </a>
+      </div>
+    </div>
+
+    <div data-reveal style="transition-delay:120ms" class="flex-shrink-0 w-full lg:w-[320px] flex flex-col gap-5">
+      <a id="presencial-map-card" href="#" target="_blank" rel="noopener"
+         class="group rounded-3xl bg-white border border-navy/10 p-6 flex flex-col gap-1.5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+        <span class="text-xs font-semibold tracking-[2px] uppercase text-navy/50">Ubicación</span>
+        <span id="presencial-location" class="font-serif text-lg font-semibold text-navy leading-snug"></span>
+        <span id="presencial-schedule" class="text-[14px] text-navy/60"></span>
+        <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-navy mt-2 group-hover:gap-2.5 transition-all">Ver en el mapa →</span>
+      </a>
+
+      <div class="rounded-3xl bg-navy p-6 flex flex-col gap-3">
+        <span class="text-xs font-semibold tracking-[2px] uppercase text-beige/60">Planes</span>
+        <div id="presencial-plans" class="flex flex-col gap-2 text-[14.5px] text-beige/90">
+          <!-- se genera desde js/database.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BANNER CTA (en movimiento) ===== -->
+  <a id="running-banner" href="#" target="_blank" rel="noopener" data-reveal
+     class="relative flex items-center gap-6 md:gap-10 overflow-hidden bg-gradient-to-r from-navy to-[#1B2838] pl-6 md:pl-16 py-5 md:py-6">
+    <span class="hidden md:inline-flex shrink-0 items-center gap-2.5 text-beige font-semibold text-[15px] pr-6 border-r border-beige/20 whitespace-nowrap">
+      <span class="w-2 h-2 rounded-full bg-flash"></span>
+      Escribime por WhatsApp
+    </span>
+    <div class="flex-1 overflow-hidden">
+      <div id="running-banner-track" class="running-banner-track items-center gap-8 md:gap-10 whitespace-nowrap text-beige/90 font-medium text-[13.5px] md:text-[15px]">
+        <!-- se genera desde js/database.js -->
+      </div>
+    </div>
+    <span class="absolute inset-y-0 right-0 w-14 md:w-28 bg-gradient-to-l from-navy to-transparent pointer-events-none"></span>
+  </a>
+
+  <!-- ===== SOBRE MI (navy) ===== -->
+  <section id="sobre-mi" class="relative overflow-hidden bg-gradient-to-b from-[#1B2838] to-navy text-beige flex flex-col md:flex-row items-center gap-10 md:gap-16 px-6 md:px-16 py-16 md:py-24">
+    <div data-reveal class="relative flex-shrink-0 w-full md:w-[380px] h-[300px] md:h-[460px]">
+      <div class="about-glow absolute -inset-8 rounded-full pointer-events-none"></div>
+      <div class="relative w-full h-full bg-gradient-to-br from-sky to-pink rounded-3xl flex items-center justify-center overflow-hidden">
+        <img id="about-photo" src="" alt="Daiana Sanson" class="hidden w-full h-full object-cover" />
+        <span id="about-photo-placeholder" class="font-serif text-navy/50 text-sm px-6 text-center">[Foto de Daiana]</span>
+      </div>
+    </div>
+    <div data-reveal style="transition-delay:120ms" class="flex-1 flex flex-col gap-5 max-w-xl">
+      <span class="inline-flex w-fit items-center gap-2 bg-gradient-to-r from-flash to-[#FF2D6B] text-white text-xs font-semibold tracking-[2px] uppercase px-4 py-1.5 rounded-full">Sobre mí</span>
+      <h2 class="font-serif text-2xl md:text-4xl font-semibold leading-tight text-beige">Formación y filosofía de entrenamiento</h2>
+      <p id="about-bio" class="text-base leading-relaxed text-beige/75"></p>
+      <a href="#contacto" class="self-start border-[1.5px] border-beige/40 text-beige rounded-full px-6 py-3.5 text-[15px] font-semibold hover:bg-gradient-to-r hover:from-flash hover:to-[#FF2D6B] hover:border-transparent hover:text-white transition-colors duration-200">Conocer más</a>
     </div>
   </section>
 
 </main>
 
-<!-- ===== FOOTER / CONTACTO ===== -->
-<footer id="contacto" class="bg-navy text-beige px-6 md:px-16 pt-14 md:pt-16 pb-8 flex flex-col gap-10">
+<!-- ===== FOOTER / CONTACTO (navy) ===== -->
+<footer id="contacto" class="bg-gradient-to-b from-navy to-[#1B2838] text-beige px-6 md:px-16 pt-14 md:pt-16 pb-8 flex flex-col gap-10">
   <div class="flex flex-col md:flex-row justify-between items-start gap-10">
     <div class="flex flex-col gap-2 max-w-xs">
       <span id="footer-name" class="font-serif text-xl font-semibold"></span>
@@ -141,7 +263,7 @@
 
     <div class="flex flex-col gap-4 items-start">
       <a id="whatsapp-footer-btn" href="#" target="_blank" rel="noopener"
-         class="bg-beige text-navy rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center gap-2">
+         class="bg-beige text-navy rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center gap-2 hover:bg-gradient-to-r hover:from-flash hover:to-[#FF2D6B] hover:text-white transition-colors duration-200">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L4 20l1.1-4.4A8.5 8.5 0 1 1 21 11.5Z"/></svg>
         Escribime por WhatsApp
       </a>
