@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daiana Sanson | Personal Trainer</title>
+<meta name="description" content="Asesorías online y presenciales, suplementos y tienda deportiva. Todo en un solo lugar.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: '#2F4156',
+          pink: '#FFE1E6',
+          azalea: '#F7C9D4',
+          sky: '#C8D9E6',
+          beige: '#F5EFEB',
+        },
+        fontFamily: {
+          serif: ['Fraunces', 'serif'],
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-beige text-navy font-sans">
+
+<!-- ===== NAVBAR ===== -->
+<header class="flex items-center justify-between px-6 md:px-16 py-6 md:py-7">
+  <a href="#inicio" id="brand-name" class="font-serif text-xl md:text-2xl font-semibold tracking-tight">Daiana Sanson</a>
+
+  <nav class="hidden md:flex items-center gap-10 text-[15px] font-medium">
+    <a href="#inicio" class="hover:underline">Inicio</a>
+    <a href="#servicios" class="hover:underline">Asesorías</a>
+    <a href="#tienda" class="hover:underline">Tienda</a>
+    <a href="#suplementos" class="hover:underline">Suplementos</a>
+    <a href="#sobre-mi" class="hover:underline">Sobre mí</a>
+    <a href="#contacto" class="hover:underline">Contacto</a>
+  </nav>
+
+  <a id="whatsapp-nav-btn" href="#" target="_blank" rel="noopener"
+     class="hidden md:inline-flex items-center gap-2 bg-navy text-beige rounded-full px-5 py-3 text-[15px] font-semibold hover:bg-[#1C2735] transition-colors">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L4 20l1.1-4.4A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+    WhatsApp
+  </a>
+
+  <button id="menu-btn" type="button" aria-label="Abrir menú" aria-expanded="false"
+          class="md:hidden w-11 h-11 rounded-xl border border-navy/20 flex items-center justify-center shrink-0">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+</header>
+
+<!-- Menú mobile -->
+<div id="mobile-menu" class="hidden md:hidden flex-col gap-4 px-6 pb-6 text-[15px] font-medium">
+  <a href="#inicio" class="py-1">Inicio</a>
+  <a href="#servicios" class="py-1">Asesorías</a>
+  <a href="#tienda" class="py-1">Tienda</a>
+  <a href="#suplementos" class="py-1">Suplementos</a>
+  <a href="#sobre-mi" class="py-1">Sobre mí</a>
+  <a href="#contacto" class="py-1">Contacto</a>
+  <a id="whatsapp-mobile-btn" href="#" target="_blank" rel="noopener"
+     class="bg-navy text-beige rounded-full text-center py-3 font-semibold mt-1">Hablar por WhatsApp</a>
+</div>
+
+<main>
+
+  <!-- ===== HERO ===== -->
+  <section id="inicio" class="flex flex-col md:flex-row items-center gap-10 md:gap-16 px-6 md:px-16 pt-2 md:pt-8 pb-16 md:pb-24">
+    <div class="flex-1 flex flex-col gap-6 md:gap-7 max-w-xl">
+      <span class="text-xs font-semibold tracking-[2px] uppercase text-navy/60">Personal Trainer</span>
+      <h1 id="hero-title" class="font-serif text-4xl md:text-6xl font-semibold leading-[1.1]" style="white-space:pre-line;"></h1>
+      <p id="hero-subtitle" class="text-base md:text-lg leading-relaxed text-navy/75 max-w-md"></p>
+      <div class="flex flex-wrap gap-4">
+        <a href="#servicios" class="bg-navy text-beige rounded-full px-7 py-4 text-[15px] md:text-base font-semibold hover:bg-[#1C2735] transition-colors text-center">Ver asesorías</a>
+        <a id="whatsapp-hero-btn" href="#" target="_blank" rel="noopener"
+           class="border-[1.5px] border-navy text-navy rounded-full px-7 py-4 text-[15px] md:text-base font-semibold hover:bg-navy hover:text-beige transition-colors text-center">Hablar por WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="flex-shrink-0 relative w-full max-w-[440px] aspect-[440/560]">
+      <div class="absolute top-4 -left-4 w-full h-full bg-sky rounded-[28px]"></div>
+      <div class="relative w-full h-full bg-azalea rounded-[28px] flex items-center justify-center overflow-hidden">
+        <img id="hero-photo" src="" alt="Daiana Sanson" class="hidden w-full h-full object-cover" />
+        <span id="hero-photo-placeholder" class="font-serif text-navy/50 text-base px-6 text-center">[Foto de Daiana]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICIOS ===== -->
+  <section id="servicios" class="bg-white px-6 md:px-16 py-16 md:py-24 flex flex-col gap-10 md:gap-12">
+    <div class="max-w-xl flex flex-col gap-3">
+      <span class="text-xs font-semibold tracking-[2px] uppercase text-navy/60">Todo en un solo lugar</span>
+      <h2 class="font-serif text-3xl md:text-4xl font-semibold">Mis servicios</h2>
+    </div>
+    <div id="services-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+      <!-- las tarjetas se generan desde js/database.js -->
+    </div>
+  </section>
+
+  <!-- ===== SOBRE MI ===== -->
+  <section id="sobre-mi" class="flex flex-col md:flex-row items-center gap-10 md:gap-16 px-6 md:px-16 py-16 md:py-24">
+    <div class="flex-shrink-0 w-full md:w-[380px] h-[300px] md:h-[460px] bg-sky rounded-3xl flex items-center justify-center overflow-hidden">
+      <img id="about-photo" src="" alt="Daiana Sanson" class="hidden w-full h-full object-cover" />
+      <span id="about-photo-placeholder" class="font-serif text-navy/50 text-sm px-6 text-center">[Foto de Daiana]</span>
+    </div>
+    <div class="flex-1 flex flex-col gap-5 max-w-xl">
+      <span class="text-xs font-semibold tracking-[2px] uppercase text-navy/60">Sobre mí</span>
+      <h2 class="font-serif text-2xl md:text-4xl font-semibold leading-tight">Formación y filosofía de entrenamiento</h2>
+      <p id="about-bio" class="text-base leading-relaxed text-navy/75"></p>
+      <a href="#contacto" class="self-start border-[1.5px] border-navy text-navy rounded-full px-6 py-3.5 text-[15px] font-semibold hover:bg-navy hover:text-beige transition-colors">Conocer más</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER / CONTACTO ===== -->
+<footer id="contacto" class="bg-navy text-beige px-6 md:px-16 pt-14 md:pt-16 pb-8 flex flex-col gap-10">
+  <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+    <div class="flex flex-col gap-2 max-w-xs">
+      <span id="footer-name" class="font-serif text-xl font-semibold"></span>
+      <p class="text-sm leading-relaxed text-beige/65">Personal trainer — asesorías, suplementos y ropa deportiva en un solo lugar.</p>
+    </div>
+
+    <nav class="flex flex-col gap-2 text-sm text-beige/80">
+      <a href="#inicio" class="hover:text-beige">Inicio</a>
+      <a href="#servicios" class="hover:text-beige">Asesorías</a>
+      <a href="#tienda" class="hover:text-beige">Tienda</a>
+      <a href="#suplementos" class="hover:text-beige">Suplementos</a>
+      <a href="#sobre-mi" class="hover:text-beige">Sobre mí</a>
+    </nav>
+
+    <div class="flex flex-col gap-4 items-start">
+      <a id="whatsapp-footer-btn" href="#" target="_blank" rel="noopener"
+         class="bg-beige text-navy rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center gap-2">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L4 20l1.1-4.4A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+        Escribime por WhatsApp
+      </a>
+      <a id="instagram-link" href="#" target="_blank" rel="noopener" aria-label="Instagram" class="hover:opacity-70 transition-opacity">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="border-t border-beige/15 pt-6">
+    <span class="text-[13px] text-beige/55">© 2026 <span id="footer-year-name"></span> · Sitio en construcción</span>
+  </div>
+</footer>
+
+<script src="js/database.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

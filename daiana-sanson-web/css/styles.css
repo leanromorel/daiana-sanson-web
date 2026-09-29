@@ -1,0 +1,16 @@
+/* Ajustes puntuales que Tailwind (por CDN) no cubre con utilidades. */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Deja lugar debajo del navbar fijo al hacer scroll a una sección (por si en el futuro se fija el header). */
+section[id],
+footer[id] {
+  scroll-margin-top: 24px;
+}
+
+/* Evita el flash de fuente sin estilizar en textos grandes. */
+h1, h2, h3 {
+  font-display: swap;
+}
