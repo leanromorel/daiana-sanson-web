@@ -64,6 +64,20 @@ function renderTrainerInfo() {
 
   const igLink = document.getElementById("instagram-link");
   if (igLink) igLink.href = info.instagramUrl;
+
+  const igHandle = getInstagramHandle(info.instagramUrl);
+  const igCtaBtn = document.getElementById("instagram-cta-btn");
+  if (igCtaBtn) igCtaBtn.href = info.instagramUrl;
+  setText("instagram-handle", igHandle);
+}
+
+// Extrae "@usuario" a partir de la URL completa de Instagram.
+function getInstagramHandle(instagramUrl) {
+  if (!instagramUrl) return "";
+  const clean = instagramUrl.replace(/\/+$/, "");
+  const parts = clean.split("/");
+  const user = parts[parts.length - 1];
+  return user ? `@${user}` : "";
 }
 
 // ------------------------------------------------------------------
