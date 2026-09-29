@@ -4,13 +4,118 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Deja lugar debajo del navbar fijo al hacer scroll a una sección (por si en el futuro se fija el header). */
+/* Deja lugar debajo del navbar fijo al hacer scroll a una sección. */
 section[id],
 footer[id] {
-  scroll-margin-top: 24px;
+  scroll-margin-top: 88px;
 }
 
 /* Evita el flash de fuente sin estilizar en textos grandes. */
 h1, h2, h3 {
   font-display: swap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Navbar: cambia de aspecto al scrollear (más compacta, con blur)     */
+/* ------------------------------------------------------------------ */
+#site-header.is-scrolled {
+  background-color: rgba(27, 40, 56, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Links del menú: subrayado animado en fluor                         */
+/* ------------------------------------------------------------------ */
+.nav-link {
+  position: relative;
+  color: #F5EFEB;
+  padding-bottom: 3px;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #FF4F81, #FF2D6B);
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ------------------------------------------------------------------ */
+/* Resplandor difuminado detrás de las fotos (degradé en la gama fluor) */
+/* ------------------------------------------------------------------ */
+.hero-glow {
+  background: radial-gradient(closest-side, rgba(255, 79, 129, 0.45), rgba(255, 79, 129, 0));
+  filter: blur(46px);
+}
+.about-glow {
+  background: radial-gradient(closest-side, rgba(200, 217, 230, 0.55), rgba(200, 217, 230, 0));
+  filter: blur(40px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Entrada del hero (se dispara al cargar la página)                  */
+/* ------------------------------------------------------------------ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Cinta animada (marquee) entre el hero y los servicios               */
+/* ------------------------------------------------------------------ */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 24s linear infinite;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Banner en movimiento (CTA) entre Servicios y Sobre mí.              */
+/* Va en sentido contrario a la cinta de arriba, para dar variedad.    */
+/* ------------------------------------------------------------------ */
+.running-banner-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 26s linear infinite reverse;
+}
+
+/* ------------------------------------------------------------------ */
+/* Aparición al hacer scroll (activado por IntersectionObserver en JS) */
+/* ------------------------------------------------------------------ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 0.8, 0.24, 1),
+              transform 0.7s cubic-bezier(0.16, 0.8, 0.24, 1);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respeta a quienes prefieren menos movimiento en pantalla. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
 }
