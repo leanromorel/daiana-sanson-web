@@ -129,7 +129,7 @@ const DB = {
   // ------------------------------------------------------------------
   onlineCoaching: {
     title: "Asesoría Online",
-    price: 65000,
+    price: 70000,
     currency: "ARS",
     period: "mensual",
     description:
@@ -154,7 +154,7 @@ const DB = {
     // botón "Pagar con Mercado Pago" que abre ese link directo — la persona
     // paga con un clic y a Daiana le llega la notificación con su nombre,
     // sin necesidad de nada más de nuestro lado (eso ya lo maneja Mercado Pago).
-    mercadoPagoLink: "",
+    mercadoPagoLink: "https://mpago.la/3336YAs",
   },
 
   // ------------------------------------------------------------------
