@@ -33,10 +33,10 @@ const DB = {
     // Por ahora la página usa una sola foto, en la sección "Sobre mí".
     aboutPhotoUrl: "",
 
-    // TODO: número real de WhatsApp de la clienta.
+    // TODO: reemplazar por el número real de WhatsApp de Daiana.
+    // Por ahora, provisoriamente, está el número de Gonzalo para probar cómo llega el formulario.
     // Formato: código de país + característica + número, sin "+", sin espacios ni guiones.
-    // Ejemplo Argentina (Santa Fe, cel): "549342XXXXXXX"
-    whatsappNumber: "549000000000",
+    whatsappNumber: "5493772634185",
 
     instagramUrl: "https://www.instagram.com/daianasanson",
   },
