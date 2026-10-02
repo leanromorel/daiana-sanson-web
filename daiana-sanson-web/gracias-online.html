@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Pago recibido! | Daiana Sanson</title>
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: '#2F4156',
+          beige: '#F5EFEB',
+          flash: '#FF4F81',
+        },
+        fontFamily: {
+          serif: ['Fraunces', 'serif'],
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="bg-gradient-to-b from-navy to-[#1B2838] text-beige font-sans min-h-screen flex items-center justify-center px-6">
+
+  <div class="max-w-md w-full flex flex-col items-center text-center gap-5 py-16">
+    <span class="text-5xl">✅</span>
+    <h1 class="font-serif text-3xl md:text-4xl font-semibold">¡Pago recibido!</h1>
+    <p class="text-beige/75 leading-relaxed">
+      Te estamos llevando a WhatsApp para que le mandes el comprobante a Daiana y coordinen tu plan. Si no se abrió solo, tocá el botón de abajo.
+    </p>
+    <a id="wa-btn" href="#"
+       class="bg-gradient-to-r from-flash to-[#FF2D6B] text-white rounded-full px-7 py-4 text-[15px] font-semibold shadow-[0_10px_28px_-6px_rgba(255,45,107,0.55)] hover:-translate-y-0.5 transition-all duration-200">
+      Continuar por WhatsApp
+    </a>
+    <a href="/" class="text-[13px] text-beige/50 hover:text-beige/80 transition-colors mt-2">Volver al sitio</a>
+  </div>
+
+<!-- Reutiliza los mismos datos y funciones del sitio (número de WhatsApp,
+     preguntas del formulario, mensaje de "ya pagué") para no duplicar
+     contenido — todo sigue viviendo en js/database.js. -->
+<script src="js/database.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const link = buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildPaidOnlineWhatsappMessage());
+    const btn = document.getElementById("wa-btn");
+    if (btn) btn.href = link;
+    // Intento de redirección automática a WhatsApp.
+    window.location.href = link;
+  });
+</script>
+</body>
+</html>
