@@ -156,22 +156,15 @@ function renderOnlineCoaching() {
   }
   setText("online-price-label", d.currency && d.period ? `${d.currency} · ${d.period}` : "");
 
-  const waLink = buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildIntakeWhatsappMessage("la Asesoría Online"));
+  // Este botón ahora es el paso 2 (después de pagar), así que el mensaje
+  // ya le recuerda a la persona adjuntar el comprobante ahí mismo en el chat.
+  const waLink = buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildPaidOnlineWhatsappMessage());
   const btn = document.getElementById("whatsapp-online-btn");
   if (btn) btn.href = waLink;
 
-  // Botón de pago directo (aparece solo cuando hay un link de Mercado Pago cargado).
-  const mpBtn = document.getElementById("mercadopago-btn");
-  if (mpBtn) {
-    if (d.mercadoPagoLink) {
-      mpBtn.href = d.mercadoPagoLink;
-      mpBtn.classList.remove("hidden");
-      mpBtn.classList.add("inline-flex");
-    } else {
-      mpBtn.classList.add("hidden");
-      mpBtn.classList.remove("inline-flex");
-    }
-  }
+  // El botón "Pagar con Mercado Pago" ya apunta, directo en el HTML, a
+  // /api/create-preference (nuestra función del servidor) — no necesita
+  // nada de acá.
 }
 
 // ------------------------------------------------------------------
@@ -369,6 +362,17 @@ function buildIntakeWhatsappMessage(contextLabel) {
   const fields = (DB.intakeForm && DB.intakeForm.fields) || [];
   const lines = fields.map((f) => `- ${f.label}: `);
   return `Hola ${DB.trainerInfo.name}! Quiero empezar ${contextLabel} 💪 Te paso mis datos:\n${lines.join("\n")}`;
+}
+
+// Mensaje para quienes ya pagaron la Asesoría Online por Mercado Pago:
+// le recuerda a la persona adjuntar el comprobante ahí mismo, como
+// archivo de WhatsApp (eso no se puede pre-cargar desde un link, lo
+// adjunta la persona manualmente, pero el mensaje se lo recuerda), y de
+// paso ya le deja armadas las preguntas del formulario.
+function buildPaidOnlineWhatsappMessage() {
+  const fields = (DB.intakeForm && DB.intakeForm.fields) || [];
+  const lines = fields.map((f) => `- ${f.label}: `);
+  return `Hola ${DB.trainerInfo.name}! Ya realicé el pago de la Asesoría Online 💪 Te adjunto acá el comprobante 📎\n\nTe paso también mis datos para armar mi plan:\n${lines.join("\n")}`;
 }
 
 // Lista de "qué incluye" reutilizada por Asesoría online y presencial.
