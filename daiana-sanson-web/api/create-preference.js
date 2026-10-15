@@ -1,56 +1,58 @@
 /**
  * api/create-preference.js
- * -----------------------------------------------------------------------
- * Función del servidor (Vercel la detecta sola por estar en /api) que crea
- * una preferencia de pago de Mercado Pago (Checkout Pro) y redirige directo
- * al checkout. Es la única pieza "con servidor" de todo el sitio — el resto
- * sigue siendo 100% estático.
+ * Crea una preferencia de pago de Mercado Pago (Checkout Pro) según el plan
+ * elegido y redirige al checkout. El Access Token NO está acá: se lee de la
+ * variable de entorno MP_ACCESS_TOKEN configurada en Vercel.
  *
- * El Access Token de Mercado Pago NUNCA está escrito acá en el código:
- * se lee de una variable de entorno configurada en Vercel
- * (Project Settings > Environment Variables > MP_ACCESS_TOKEN). Así el
- * token no queda expuesto en el repositorio de GitHub (que es público).
- *
- * Si algo falla (variable no configurada todavía, error de red, etc.), el
- * botón no se rompe: redirige de respaldo al link de pago simple de
- * Mercado Pago.
- *
- * Importante: si cambia el precio de la Asesoría Online, hay que
- * actualizarlo ACÁ (unit_price) y también en js/database.js
- * (onlineCoaching.price), son dos lugares separados porque este archivo
- * corre en el servidor y database.js corre en el navegador.
- * -----------------------------------------------------------------------
+ * Si cambia el precio de un plan, hay que actualizarlo ACÁ (PLANS) y también
+ * en js/database.js (onlineCoaching.plans): mismo "id" y mismo precio.
  */
 
+const PLANS = {
+  start: { name: "Plan Start (mensual)", price: 70000 },
+  pro: { name: "Plan Pro (trimestral)", price: 195000 },
+  premium: { name: "Plan Premium (anual)", price: 660000 },
+};
+
+// Link de pago simple de respaldo: solo existe para el Plan Start ($70.000).
 const FALLBACK_LINK = "https://mpago.la/3336YAs";
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const accessToken = process.env.MP_ACCESS_TOKEN;
+  const origin = `https://${req.headers.host}`;
 
-  // Todavía no se cargó el Access Token en Vercel: no rompemos el botón,
-  // mandamos al link de pago simple de siempre.
+  // Plan elegido (?plan=start|pro|premium). Si falta o es inválido, Start.
+  const url = new URL(req.url, origin);
+  const requested = url.searchParams.get("plan");
+  const planId = PLANS[requested] ? requested : "start";
+  const plan = PLANS[planId];
+
+  const mode = "online";
+  const modeLabel = "Online";
+
+  // Si algo falla: Start usa el link simple; los otros planes vuelven a la
+  // sección de planes para no cobrar un monto equivocado.
+  const fallback = planId === "start" ? FALLBACK_LINK : `${origin}/#asesoria-${mode}`;
+
   if (!accessToken) {
-    res.writeHead(302, { Location: FALLBACK_LINK });
+    res.writeHead(302, { Location: fallback });
     return res.end();
   }
 
   try {
-    const host = req.headers.host;
-    const origin = `https://${host}`;
-
     const preference = {
       items: [
         {
-          title: "Asesoría Online - Daiana Sanson",
+          title: `Asesoría ${modeLabel} - ${plan.name} - Daiana Sanson`,
           quantity: 1,
-          unit_price: 70000,
+          unit_price: plan.price,
           currency_id: "ARS",
         },
       ],
       back_urls: {
-        success: `${origin}/gracias-online.html`,
-        pending: `${origin}/#asesoria-online`,
-        failure: `${origin}/#asesoria-online`,
+        success: `${origin}/gracias-online.html?plan=${planId}&mode=${mode}`,
+        pending: `${origin}/#asesoria-${mode}`,
+        failure: `${origin}/#asesoria-${mode}`,
       },
       auto_return: "approved",
     };
@@ -67,14 +69,14 @@ export default async function handler(req, res) {
     const data = await mpResponse.json();
 
     if (!mpResponse.ok || !data.init_point) {
-      res.writeHead(302, { Location: FALLBACK_LINK });
+      res.writeHead(302, { Location: fallback });
       return res.end();
     }
 
     res.writeHead(302, { Location: data.init_point });
     return res.end();
   } catch (err) {
-    res.writeHead(302, { Location: FALLBACK_LINK });
+    res.writeHead(302, { Location: fallback });
     return res.end();
   }
-}
+};
