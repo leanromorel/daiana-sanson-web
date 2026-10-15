@@ -25,13 +25,34 @@ const DB = {
     heroSubtitle:
       "Asesoría online y presencial, seguimiento personalizado y una comunidad enfocada en resultados reales.",
 
-    bio:
-      "[Bio breve: trayectoria, formación y enfoque de entrenamiento de Daiana. " +
-      "Se completa con la información que envíe la clienta.]",
+    // Texto de "Sobre mí": cada elemento es un párrafo. La última línea
+    // ("closing") se muestra destacada, con el botón para empezar.
+    aboutTitle: "Conocé mi historia",
+    // Frase que va arriba, sobre la foto grande de la sección.
+    aboutQuote:
+      "Un espacio creado para acompañarte en tu proceso, impulsarte a superar tus límites y recordarte que cada paso te acerca a tu mejor versión.",
+    // Fotos de la tira de película (se pueden cambiar/agregar/quitar).
+    // position = qué parte de la foto queda visible (x% y%).
+    aboutPhotos: [
+      { src: "img/fotos/retrato.jpg", alt: "Daiana Sanson, retrato", position: "50% 25%" },
+      { src: "img/fotos/silueta.jpg", alt: "Daiana Sanson, silueta a contraluz", position: "50% 30%" },
+      { src: "img/fotos/perfil.jpg", alt: "Daiana Sanson, retrato de perfil", position: "50% 25%" },
+      { src: "img/fotos/espalda-bn.jpg", alt: "Daiana Sanson, espalda en blanco y negro", position: "50% 35%" },
+    ],
+    bio: [
+      "Soy Dai Sanson, entrenadora personal y apasionada por el mundo del fitness.",
+      "Mi camino en el entrenamiento comenzó mucho antes de convertirlo en mi profesión. Con el tiempo entendí que entrenar no se trata solamente de cambiar el cuerpo, sino también de ganar confianza, sentirse mejor, cuidar nuestra salud y construir hábitos que podamos sostener en el tiempo.",
+      "Sé que empezar no siempre es fácil. Muchas veces no sabemos por dónde hacerlo, qué ejercicios elegir, cómo progresar o simplemente nos cuesta mantener la motivación cuando los resultados no llegan tan rápido como esperamos.",
+      "Por eso, hoy mi objetivo como entrenadora es mucho más que darte una rutina. Quiero acompañarte durante todo el proceso.",
+      "Cada persona tiene objetivos, necesidades y tiempos diferentes. Por eso trabajo de manera personalizada, creando un plan adaptado a vos y acompañándote para que puedas entrenar con seguridad, confianza y una dirección clara.",
+      "Mi compromiso es ayudarte a superar tus límites, disfrutar del proceso y acercarte cada día un poco más a tu mejor versión.",
+    ],
+    aboutHighlight: "Tu objetivo marca el rumbo. Yo te acompaño a construir el camino para alcanzarlo.",
+    aboutCta: "¿Empezamos?",
 
     // Ruta local (ej: "img/foto-daiana.jpg") una vez que tengamos la foto real.
     // Por ahora la página usa una sola foto, en la sección "Sobre mí".
-    aboutPhotoUrl: "",
+    aboutPhotoUrl: "img/fotos/retrato.jpg",
 
     // TODO: reemplazar por el número real de WhatsApp de Daiana.
     // Por ahora, provisoriamente, está el número de Gonzalo para probar cómo llega el formulario.
@@ -95,7 +116,7 @@ const DB = {
       id: "suplementos",
       icon: "bottle",
       title: "Suplementos",
-      description: "Mi línea de suplementos para potenciar tu entrenamiento.",
+      description: "Mi línea de suplementos para potenciar tu entrenamiento. Usá el código DAISANSON10 y tenés 10% OFF.",
       ctaLabel: "Ver catálogo",
       href: "https://r.morashop.ar/daisanson",
     },
@@ -110,37 +131,74 @@ const DB = {
   ],
 
   // ------------------------------------------------------------------
-  // Mensajes del banner en movimiento (entre "Servicios" y "Sobre mí").
-  // Se repiten en loop infinito. Podés sumar un dato real más adelante,
-  // ej: "+5 años de experiencia" o "+300 alumnos entrenados".
-  // ------------------------------------------------------------------
-  runningBanner: {
-    messages: [
-      "Escribime por WhatsApp y armamos tu plan hoy mismo",
-      "Planes 100% personalizados",
-      "Asesorías online y presenciales",
-      "Pago simple, directo por WhatsApp",
-    ],
-  },
-
-  // ------------------------------------------------------------------
   // Asesoría online — se completa cuando la clienta pase el contenido
   // (qué incluye, qué no incluye, precio, duración, modalidad, FAQ, etc.)
   // ------------------------------------------------------------------
   onlineCoaching: {
     title: "Asesoría Online",
-    price: 70000,
     currency: "ARS",
-    period: "mensual",
     description:
       "Mi asesoría online está diseñada para acompañarte de manera personalizada a alcanzar tus objetivos, mejorar tu rendimiento y sentirte mejor.",
-    includes: [
-      "🏋🏻‍♀️ Rutina de entrenamiento personalizada, adaptada a tus objetivos, nivel y disponibilidad.",
-      "🥗 Plan de alimentación personalizado para acompañar tu proceso.",
-      "🔥 Ejercicios de movilidad y preparación antes de cada entrenamiento.",
-      "📈 Seguimiento cada 4 semanas para evaluar tu progreso y ajustar el plan.",
-      "💬 Soporte vía WhatsApp durante todo el proceso.",
-      "💊 Guía sobre suplementación según tus objetivos y necesidades.",
+    // Planes. "id" se usa también en api/create-preference.js (ahí están los
+    // precios que realmente se cobran): si cambia un precio, cambiarlo en los
+    // dos archivos. "monthlyEquivalent" es solo el texto de "equivale a".
+    plans: [
+      {
+        id: "start",
+        tag: "Plan mensual",
+        name: "Plan Start",
+        price: 70000,
+        period: "por mes",
+        intro: "Ideal para quienes quieren probar la asesoría y empezar a trabajar mes a mes.",
+        includesLead: "Incluye:",
+        includes: [
+          "Rutina de entrenamiento personalizada según objetivos y nivel.",
+          "Plan de alimentación personalizado.",
+          "Ejercicios de movilidad y preparación antes de entrenar.",
+          "Seguimiento y ajuste del plan cada 4 semanas.",
+          "Soporte por WhatsApp para consultas.",
+          "Orientación sobre suplementación.",
+          "Adaptaciones de ejercicios según necesidades.",
+        ],
+      },
+      {
+        id: "pro",
+        tag: "Plan trimestral",
+        name: "Plan Pro",
+        price: 195000,
+        period: "cada 3 meses",
+        monthlyEquivalent: 65000,
+        featured: true, // lleva la etiqueta "Recomendado"
+        intro: "Un proceso progresivo de 3 meses, con seguimiento más completo.",
+        includesLead: "Incluye todo lo del Plan Start, más:",
+        includes: [
+          "Compromiso de 3 meses para trabajar de manera progresiva.",
+          "Seguimiento más completo de tu evolución durante el trimestre.",
+          "Revisión de objetivos y estrategia al finalizar cada mes.",
+          "1 revisión técnica por video al mes: me mandás videos de ejercicios puntuales y corrijo tu técnica.",
+          "Beneficio exclusivo: congelás el precio durante los 3 meses.",
+        ],
+      },
+      {
+        id: "premium",
+        tag: "Plan anual",
+        name: "Plan Premium",
+        price: 660000,
+        period: "por 12 meses",
+        monthlyEquivalent: 55000,
+        intro: "Acompañamiento todo el año, con planificación a largo plazo.",
+        includesLead: "Incluye todo lo del Plan Pro, más:",
+        includes: [
+          "Acompañamiento durante todo el año.",
+          "Planificación a largo plazo, trabajando distintas etapas y objetivos.",
+          "Seguimiento de tu evolución física y rendimiento.",
+          "Revisiones periódicas de objetivos.",
+          "Corrección técnica por video.",
+          "Adaptación de entrenamiento y alimentación según cada etapa.",
+          "2 videollamadas individuales durante el año para evaluar el proceso y definir próximos objetivos.",
+          "Precio congelado durante todo el año.",
+        ],
+      },
     ],
     excludes: [], // TODO: si hay algo que aclarar que NO incluye
     requirements: [], // TODO
@@ -163,20 +221,11 @@ const DB = {
   inPersonCoaching: {
     location: "Fortress Gym — Pedro Vittori 3759, S3002 DME, Santa Fe",
     schedule: "De lunes a viernes",
-    plans: ["3 días por semana", "5 días por semana"],
     description:
       "Entrenamientos personalizados diseñados para ayudarte a alcanzar tus objetivos, mejorar tu rendimiento y sentirte mejor. ✨",
-    includes: [
-      "🏋🏻‍♀️ Entrenamiento personalizado según tus objetivos.",
-      "🥗 Plan de alimentación personalizado.",
-      "🔥 Movilidad y preparación previa al entrenamiento.",
-      "📈 Seguimiento y ajuste del plan cada 4 semanas.",
-      "💬 Soporte vía WhatsApp.",
-      "💊 Guía sobre suplementación.",
-    ],
     closingNote:
       "Un acompañamiento personalizado para que puedas entrenar con un plan, progresar y alcanzar tus objetivos de forma efectiva y sostenible. 💖",
-    ctaNote: "¿Querés empezar? Escribime y coordinamos tu primer entrenamiento. ✨",
+    ctaNote: "El valor de la asesoría presencial varía según el plan y tus días de entrenamiento. Escribile a Daiana por WhatsApp y te pasa el precio y coordinan tu primer entrenamiento. ✨",
   },
 
   // ------------------------------------------------------------------
@@ -191,15 +240,19 @@ const DB = {
   ],
 
   // ------------------------------------------------------------------
-  // Preguntas del formulario de Asesoría Online (anamnesis)
-  // Se completa cuando la clienta defina exactamente qué quiere preguntar.
+  // Preguntas del formulario (anamnesis) — una lista para Asesoría Online
+  // y otra para Asesoría Presencial, porque ahora piden datos distintos.
+  // Estos datos se usan para armar el mensaje de WhatsApp prearmado de
+  // cada botón ("Ya pagué, continuar por WhatsApp" / "Coordinar mi primer
+  // entrenamiento"): así la persona ve las preguntas y las responde
+  // directo en el chat, sin necesidad de un formulario con backend.
   // ------------------------------------------------------------------
   intakeForm: {
-    // Estos datos se usan para armar el mensaje de WhatsApp prearmado de
-    // los botones "Quiero empezar" (Asesoría online y presencial): así la
-    // clienta nueva ve las preguntas y las responde directo en el chat,
-    // sin necesidad de un formulario con backend.
-    fields: [
+    // Online: el formulario común de siempre, más el recordatorio de
+    // adjuntar el comprobante de pago al final (type: "attachment" hace
+    // que esa línea no termine en ": ___" como las demás, porque no es
+    // una pregunta para responder sino una acción para hacer ahí mismo).
+    online: [
       { id: "fullName", label: "Nombre y apellido", type: "text", required: true },
       { id: "location", label: "De dónde sos (ciudad/país)", type: "text", required: true },
       { id: "age", label: "Cuántos años tenés", type: "number", required: true },
@@ -207,6 +260,23 @@ const DB = {
       { id: "height", label: "Altura", type: "text", required: true },
       { id: "goal", label: "Cuál es tu objetivo actualmente", type: "textarea", required: true },
       { id: "injuries", label: "Lesiones: sí/no, ¿cuáles?", type: "text", required: true },
+      {
+        id: "extra",
+        label: "¿Algo más que quieras contarme para tener en cuenta al armar tu plan?",
+        type: "textarea",
+        required: false,
+      },
+      { id: "receipt", label: "Adjuntar comprobante de pago 📎", type: "attachment", required: true },
+    ],
+
+    // Presencial: sin datos físicos (peso/altura) ni ciudad (ya se sabe
+    // que entrena en el gimnasio), y con disponibilidad horaria en vez.
+    presencial: [
+      { id: "fullName", label: "Nombre y apellido", type: "text", required: true },
+      { id: "age", label: "Cuántos años tenés", type: "number", required: true },
+      { id: "goal", label: "Cuál es tu objetivo actualmente", type: "textarea", required: true },
+      { id: "injuries", label: "Lesiones: sí/no, ¿cuáles?", type: "text", required: true },
+      { id: "availability", label: "Disponibilidad horaria y días para entrenar", type: "text", required: true },
       {
         id: "extra",
         label: "¿Algo más que quieras contarme para tener en cuenta al armar tu plan?",
