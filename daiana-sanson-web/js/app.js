@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTrainerInfo();
   renderServices();
   renderMarquee();
-  renderRunningBanner();
   renderOnlineCoaching();
   renderInPersonCoaching();
   renderPaymentMethods();
@@ -52,12 +51,35 @@ function renderTrainerInfo() {
 
   setText("hero-title", info.heroTitle);
   setText("hero-subtitle", info.heroSubtitle);
-  setText("about-bio", info.bio);
+  setText("story-quote", info.aboutQuote);
+  const paragraphs = (Array.isArray(info.bio) ? info.bio : [info.bio]).filter(Boolean);
+  const half = Math.ceil(paragraphs.length / 2);
+  const toHtml = (list) => list.map((t) => `<p>${escapeHtml(t)}</p>`).join("");
+  const col1 = document.getElementById("story-col-1");
+  const col2 = document.getElementById("story-col-2");
+  if (col1) col1.innerHTML = toHtml(paragraphs.slice(0, half));
+  if (col2) col2.innerHTML = toHtml(paragraphs.slice(half));
+  setText("about-highlight", info.aboutHighlight);
+  setText("about-cta", info.aboutCta);
 
-  setPhoto("about-photo", "about-photo-placeholder", info.aboutPhotoUrl);
+  const strip = document.getElementById("story-strip");
+  if (strip) {
+    strip.innerHTML = (info.aboutPhotos || [])
+      .map(
+        (ph) => `
+      <div class="shrink-0 w-[46%] md:w-[24%] bg-[#0B121B] rounded-md px-2 py-3">
+        <div class="sprockets h-3"></div>
+        <div class="aspect-[3/4] overflow-hidden my-1.5 rounded-sm">
+          <img src="${escapeHtml(ph.src)}" alt="${escapeHtml(ph.alt || "")}" loading="lazy" class="object-cover w-full h-full" style="object-position:${escapeHtml(ph.position || "50% 30%")}" />
+        </div>
+        <div class="sprockets h-3"></div>
+      </div>`
+      )
+      .join("");
+  }
 
   const waLink = buildWhatsappLink(info.whatsappNumber, buildDefaultWhatsappMessage(info.name));
-  ["whatsapp-nav-btn", "whatsapp-hero-btn", "whatsapp-mobile-btn", "whatsapp-footer-btn", "running-banner"].forEach((id) => {
+  ["whatsapp-nav-btn", "whatsapp-hero-btn", "whatsapp-mobile-btn", "whatsapp-footer-btn", "whatsapp-float-btn"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.href = waLink;
   });
@@ -148,23 +170,104 @@ function renderOnlineCoaching() {
   setText("online-title", d.title);
   setText("online-description", d.description);
   setText("online-closing", d.closingNote);
-  renderIncludesList("online-includes", d.includes);
 
-  const priceEl = document.getElementById("online-price");
-  if (priceEl && typeof d.price === "number") {
-    priceEl.textContent = formatCurrency(d.price, d.currency);
-  }
-  setText("online-price-label", d.currency && d.period ? `${d.currency} · ${d.period}` : "");
+  renderPlanCards("online-plans", "online", "dark");
+  setupPaidButton("whatsapp-online-btn", "online");
+}
 
-  // Este botón ahora es el paso 2 (después de pagar), así que el mensaje
-  // ya le recuerda a la persona adjuntar el comprobante ahí mismo en el chat.
-  const waLink = buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildPaidOnlineWhatsappMessage());
-  const btn = document.getElementById("whatsapp-online-btn");
-  if (btn) btn.href = waLink;
+// ------------------------------------------------------------------
+// Tarjetas de planes. Se usan en Asesoría online (fondo oscuro) y en
+// Asesoría presencial (fondo claro): son los mismos planes, con los
+// mismos precios, que viven en DB.onlineCoaching.plans.
+// mode: "online" | "presencial" · theme: "dark" | "light"
+// ------------------------------------------------------------------
+function renderPlanCards(containerId, mode, theme) {
+  const el = document.getElementById(containerId);
+  const d = DB.onlineCoaching;
+  if (!el || !d || !Array.isArray(d.plans)) return;
 
-  // El botón "Pagar con Mercado Pago" ya apunta, directo en el HTML, a
-  // /api/create-preference (nuestra función del servidor) — no necesita
-  // nada de acá.
+  const dark = theme === "dark";
+  el.innerHTML = d.plans
+    .map((plan, i) => {
+      const featured = !!plan.featured;
+      const card = featured
+        ? "bg-gradient-to-br from-flash to-[#FF2D6B] text-white shadow-[0_20px_50px_-16px_rgba(255,45,107,0.6)] md:-translate-y-2"
+        : dark
+        ? "bg-white/5 border border-beige/15 text-beige"
+        : "bg-white border border-navy/10 text-navy shadow-sm";
+      const soft = featured ? "text-white/80" : dark ? "text-beige/60" : "text-navy/55";
+      const body = featured ? "text-white/95" : dark ? "text-beige/85" : "text-navy/80";
+      const check = featured ? "text-white" : "text-flash";
+      const cta = featured
+        ? "bg-white text-navy hover:-translate-y-0.5"
+        : "bg-gradient-to-r from-flash to-[#FF2D6B] text-white shadow-[0_10px_28px_-6px_rgba(255,45,107,0.55)] hover:-translate-y-0.5";
+      const consult = mode === "presencial"; // presencial: sin precio, se consulta
+      const equiv = !consult && plan.monthlyEquivalent
+        ? `<span class="text-sm ${soft}">Equivale a ${formatCurrency(plan.monthlyEquivalent, d.currency)} por mes</span>`
+        : "";
+      const priceBlock = consult
+        ? `<div class="flex flex-col gap-1"><span class="font-serif text-2xl font-semibold">Consultá el valor</span><span class="text-sm ${soft}">${escapeHtml(plan.period)} · el precio lo coordinás con Daiana</span></div>`
+        : `<div class="flex flex-col gap-1">
+          <span class="font-serif text-4xl font-semibold">${formatCurrency(plan.price, d.currency)}</span>
+          <span class="text-sm ${soft}">${escapeHtml(plan.period)}</span>
+          ${equiv}
+        </div>`;
+      const ctaHref = consult
+        ? buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildIntakeWhatsappMessage(`la Asesoría Presencial (${plan.name})`, DB.intakeForm.presencial))
+        : `/api/create-preference?plan=${escapeAttr(plan.id)}`;
+      const ctaTarget = consult ? ' target="_blank" rel="noopener"' : "";
+      const ctaLabel = consult ? "Consultar precio por WhatsApp" : `Elegir ${escapeHtml(plan.name)}`;
+      // En presencial el precio se consulta, así que no mostramos "precio congelado".
+      const items = (plan.includes || [])
+        .filter((t) => !(consult && /congel/i.test(t)))
+        .map(
+          (t) =>
+            `<li class="flex gap-2.5 items-start"><span class="${check} font-bold leading-snug">✓</span><span>${escapeHtml(t)}</span></li>`
+        )
+        .join("");
+      return `
+      <article data-reveal style="transition-delay:${i * 100}ms" class="relative rounded-3xl p-7 flex flex-col gap-5 ${card}">
+        ${featured ? '<span class="absolute -top-3 left-7 bg-navy text-beige text-[11px] font-semibold tracking-[2px] uppercase px-3.5 py-1 rounded-full border border-beige/30">Recomendado</span>' : ""}
+        <div class="flex flex-col gap-1.5">
+          <span class="text-xs font-semibold tracking-[2px] uppercase ${soft}">${escapeHtml(plan.tag)}</span>
+          <h3 class="font-serif text-2xl font-semibold">${escapeHtml(plan.name)}</h3>
+        </div>
+        ${priceBlock}
+        <p class="text-[14px] leading-relaxed ${soft}">${escapeHtml(plan.intro)}</p>
+        <div class="flex flex-col gap-3 text-[14px] leading-snug ${body}">
+          <span class="font-semibold">${escapeHtml(plan.includesLead)}</span>
+          <ul class="flex flex-col gap-2.5">${items}</ul>
+        </div>
+        <a href="${ctaHref}"${ctaTarget} data-plan-id="${escapeAttr(plan.id)}"
+           class="plan-pay-btn mt-auto inline-flex justify-center items-center text-center rounded-full px-6 py-4 text-[15px] font-semibold transition-all duration-200 ${cta}">
+          ${ctaLabel}
+        </a>
+      </article>`;
+    })
+    .join("");
+
+  // Al tocar "Elegir", recordamos qué plan eligió la persona (así el botón
+  // "Ya pagué" lo menciona en el WhatsApp).
+  el.querySelectorAll(".plan-pay-btn").forEach((a) => {
+    a.addEventListener("click", () => {
+      try { sessionStorage.setItem("chosenPlan:" + mode, a.dataset.planId); } catch (e) {}
+    });
+  });
+}
+
+// Botón "Ya pagué, continuar por WhatsApp": arma el mensaje con el plan
+// elegido (si lo recordamos) y el formulario de la modalidad.
+function setupPaidButton(buttonId, mode) {
+  const btn = document.getElementById(buttonId);
+  if (!btn) return;
+  const refresh = () => {
+    let id = null;
+    try { id = sessionStorage.getItem("chosenPlan:" + mode); } catch (e) {}
+    const plan = ((DB.onlineCoaching && DB.onlineCoaching.plans) || []).find((p) => p.id === id);
+    btn.href = buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildPaidWhatsappMessage(mode, plan && plan.name));
+  };
+  refresh();
+  btn.addEventListener("click", refresh);
 }
 
 // ------------------------------------------------------------------
@@ -180,29 +283,20 @@ function renderInPersonCoaching() {
   setText("presencial-cta-note", d.ctaNote);
   setText("presencial-location", d.location);
   setText("presencial-schedule", d.schedule);
-  renderIncludesList("presencial-includes", d.includes);
 
-  const plansEl = document.getElementById("presencial-plans");
-  if (plansEl && Array.isArray(d.plans)) {
-    plansEl.innerHTML = d.plans
-      .map(
-        (p) =>
-          `<div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-flash shrink-0"></span>${escapeHtml(p)}</div>`
-      )
-      .join("");
+  renderPlanCards("presencial-plans", "presencial", "light");
+  const waBtn = document.getElementById("whatsapp-presencial-btn");
+  if (waBtn) {
+    waBtn.href = buildWhatsappLink(
+      DB.trainerInfo.whatsappNumber,
+      buildIntakeWhatsappMessage("la Asesoría Presencial", DB.intakeForm.presencial)
+    );
   }
 
   const mapCard = document.getElementById("presencial-map-card");
   if (mapCard && d.location) {
     mapCard.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.location)}`;
   }
-
-  const waLink = buildWhatsappLink(
-    DB.trainerInfo.whatsappNumber,
-    buildIntakeWhatsappMessage("la Asesoría Presencial")
-  );
-  const btn = document.getElementById("whatsapp-presencial-btn");
-  if (btn) btn.href = waLink;
 }
 
 // ------------------------------------------------------------------
@@ -237,21 +331,6 @@ function renderPaymentMethods() {
       `;
     })
     .join("");
-}
-
-// ------------------------------------------------------------------
-// Banner en movimiento (CTA) entre Servicios y Sobre mí.
-// ------------------------------------------------------------------
-function renderRunningBanner() {
-  const track = document.getElementById("running-banner-track");
-  if (!track || !Array.isArray(DB.runningBanner?.messages) || DB.runningBanner.messages.length === 0) return;
-
-  const separator = '<span class="text-flash" aria-hidden="true">&#10022;</span>';
-  const unit = DB.runningBanner.messages.map((m) => `<span>${escapeHtml(m)}</span>`).join(separator);
-  const block = `${unit}${separator}`;
-
-  const half = block.repeat(6);
-  track.innerHTML = half + half;
 }
 
 // ------------------------------------------------------------------
@@ -358,21 +437,36 @@ function buildDefaultWhatsappMessage(name) {
 
 // Arma el mensaje de WhatsApp con las preguntas del formulario (DB.intakeForm)
 // ya listadas, para que la persona las responda directo en el chat.
-function buildIntakeWhatsappMessage(contextLabel) {
-  const fields = (DB.intakeForm && DB.intakeForm.fields) || [];
-  const lines = fields.map((f) => `- ${f.label}: `);
-  return `Hola ${DB.trainerInfo.name}! Quiero empezar ${contextLabel} 💪 Te paso mis datos:\n${lines.join("\n")}`;
+// Arma las líneas del formulario. Los campos normales quedan con ": "
+// al final (para que la persona escriba la respuesta ahí mismo); los de
+// type "attachment" (como el comprobante de pago) no, porque no son una
+// pregunta para responder sino una acción para hacer en el chat.
+function buildFieldLines(fields) {
+  return (fields || [])
+    .map((f) => (f.type === "attachment" ? `- ${f.label}` : `- ${f.label}: `))
+    .join("\n");
+}
+
+function buildIntakeWhatsappMessage(contextLabel, fields) {
+  return `Hola ${DB.trainerInfo.name}! Quiero empezar ${contextLabel} 💪 Te paso mis datos:\n${buildFieldLines(fields)}`;
 }
 
 // Mensaje para quienes ya pagaron la Asesoría Online por Mercado Pago:
 // le recuerda a la persona adjuntar el comprobante ahí mismo, como
 // archivo de WhatsApp (eso no se puede pre-cargar desde un link, lo
-// adjunta la persona manualmente, pero el mensaje se lo recuerda), y de
-// paso ya le deja armadas las preguntas del formulario.
-function buildPaidOnlineWhatsappMessage() {
-  const fields = (DB.intakeForm && DB.intakeForm.fields) || [];
-  const lines = fields.map((f) => `- ${f.label}: `);
-  return `Hola ${DB.trainerInfo.name}! Ya realicé el pago de la Asesoría Online 💪 Te adjunto acá el comprobante 📎\n\nTe paso también mis datos para armar mi plan:\n${lines.join("\n")}`;
+// adjunta la persona manualmente, pero el formulario se lo recuerda al
+// final), y de paso ya le deja armadas las preguntas del formulario.
+function buildPaidWhatsappMessage(mode, planName) {
+  const isPresencial = mode === "presencial";
+  const fields = (DB.intakeForm && DB.intakeForm[isPresencial ? "presencial" : "online"]) || [];
+  const label = isPresencial ? "Asesoría Presencial" : "Asesoría Online";
+  const planText = planName ? ` (${planName})` : "";
+  return `Hola ${DB.trainerInfo.name}! Ya realicé el pago de la ${label}${planText} 💪\n\nTe paso mis datos para armar mi plan:\n${buildFieldLines(fields)}`;
+}
+
+// (se mantiene el nombre anterior por compatibilidad)
+function buildPaidOnlineWhatsappMessage(planName) {
+  return buildPaidWhatsappMessage("online", planName);
 }
 
 // Lista de "qué incluye" reutilizada por Asesoría online y presencial.
