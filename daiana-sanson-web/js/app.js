@@ -443,7 +443,12 @@ function buildDefaultWhatsappMessage(name) {
 // pregunta para responder sino una acción para hacer en el chat.
 function buildFieldLines(fields) {
   return (fields || [])
-    .map((f) => (f.type === "attachment" ? `- ${f.label}` : `- ${f.label}: `))
+    .map((f) => {
+      if (f.type === "section") return `\n*${f.label}*`; // título de bloque, con una línea en blanco antes
+      if (f.type === "note") return `${f.label}`; // aviso, sin espacio para responder
+      if (f.type === "attachment") return `- ${f.label}`; // algo para adjuntar en el chat
+      return `- ${f.label}: `;
+    })
     .join("\n");
 }
 
