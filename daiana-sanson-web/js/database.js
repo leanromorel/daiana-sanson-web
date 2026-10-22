@@ -34,10 +34,10 @@ const DB = {
     // Fotos de la tira de película (se pueden cambiar/agregar/quitar).
     // position = qué parte de la foto queda visible (x% y%).
     aboutPhotos: [
-      { src: "img/fotos/retrato.jpg", alt: "Daiana Sanson, retrato", position: "50% 25%" },
-      { src: "img/fotos/silueta.jpg", alt: "Daiana Sanson, silueta a contraluz", position: "50% 30%" },
-      { src: "img/fotos/perfil.jpg", alt: "Daiana Sanson, retrato de perfil", position: "50% 25%" },
-      { src: "img/fotos/espalda-bn.jpg", alt: "Daiana Sanson, espalda en blanco y negro", position: "50% 35%" },
+      { src: "img/fotos/historia-perfil.jpg", alt: "Daiana Sanson, retrato de perfil", position: "50% 25%" },
+      { src: "img/fotos/historia-espalda.jpg", alt: "Daiana Sanson, de espaldas", position: "50% 30%" },
+      { src: "img/fotos/historia-bn.jpg", alt: "Daiana Sanson, silueta en blanco y negro", position: "50% 35%" },
+      { src: "img/fotos/historia-pelo.jpg", alt: "Daiana Sanson, de espaldas con las manos en el pelo", position: "50% 30%" },
     ],
     bio: [
       "Soy Dai Sanson, entrenadora personal y apasionada por el mundo del fitness.",
