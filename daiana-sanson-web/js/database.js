@@ -57,9 +57,11 @@ const DB = {
     // TODO: reemplazar por el número real de WhatsApp de Daiana.
     // Por ahora, provisoriamente, está el número de Gonzalo para probar cómo llega el formulario.
     // Formato: código de país + característica + número, sin "+", sin espacios ni guiones.
-    whatsappNumber: "5493772634185",
+    whatsappNumber: "5493424366648",
 
     instagramUrl: "https://www.instagram.com/daianasanson",
+    // Pegá acá el link de TikTok, ej: "https://www.tiktok.com/@usuario". Vacío = no se muestra.
+    tiktokUrl: "https://www.tiktok.com/@daianasanson",
   },
 
   // ------------------------------------------------------------------
@@ -225,7 +227,7 @@ const DB = {
       "Entrenamientos personalizados diseñados para ayudarte a alcanzar tus objetivos, mejorar tu rendimiento y sentirte mejor. ✨",
     closingNote:
       "Un acompañamiento personalizado para que puedas entrenar con un plan, progresar y alcanzar tus objetivos de forma efectiva y sostenible. 💖",
-    ctaNote: "El valor de la asesoría presencial varía según el plan y tus días de entrenamiento. Escribile a Daiana por WhatsApp y te pasa el precio y coordinan tu primer entrenamiento. ✨",
+    ctaNote: "El valor de la asesoría presencial varía según el plan y tus días de entrenamiento. Escribime por WhatsApp y te paso el precio y coordinamos tu primer entrenamiento. ✨",
   },
 
   // ------------------------------------------------------------------
