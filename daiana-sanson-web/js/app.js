@@ -91,6 +91,16 @@ function renderTrainerInfo() {
   const igCtaBtn = document.getElementById("instagram-cta-btn");
   if (igCtaBtn) igCtaBtn.href = info.instagramUrl;
   setText("instagram-handle", igHandle);
+
+  // TikTok: se muestra solo si hay link cargado en database.js
+  const hasTt = !!info.tiktokUrl;
+  document.querySelectorAll("[data-tiktok]").forEach((el) => {
+    if (!hasTt) { el.classList.add("hidden"); return; }
+    el.classList.remove("hidden");
+    el.href = info.tiktokUrl;
+  });
+  const ttHandle = hasTt ? (info.tiktokUrl.replace(/\/+$/, "").split("/").pop() || "") : "";
+  setText("tiktok-handle", ttHandle.startsWith("@") ? ttHandle : ttHandle ? "@" + ttHandle : "");
 }
 
 // Extrae "@usuario" a partir de la URL completa de Instagram.
@@ -206,7 +216,7 @@ function renderPlanCards(containerId, mode, theme) {
         ? `<span class="text-sm ${soft}">Equivale a ${formatCurrency(plan.monthlyEquivalent, d.currency)} por mes</span>`
         : "";
       const priceBlock = consult
-        ? `<div class="flex flex-col gap-1"><span class="font-serif text-2xl font-semibold">Consultá el valor</span><span class="text-sm ${soft}">${escapeHtml(plan.period)} · el precio lo coordinás con Daiana</span></div>`
+        ? `<div class="flex flex-col gap-1"><span class="font-serif text-2xl font-semibold">Consultá el valor</span><span class="text-sm ${soft}">${escapeHtml(plan.period)} · el precio lo coordinamos por WhatsApp</span></div>`
         : `<div class="flex flex-col gap-1">
           <span class="font-serif text-4xl font-semibold">${formatCurrency(plan.price, d.currency)}</span>
           <span class="text-sm ${soft}">${escapeHtml(plan.period)}</span>
