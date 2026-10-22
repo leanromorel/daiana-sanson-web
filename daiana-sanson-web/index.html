@@ -159,10 +159,16 @@
 
   <!-- ===== ASESORÍA ONLINE (navy) ===== -->
   <section id="asesoria-online" class="relative overflow-hidden bg-gradient-to-b from-[#1B2838] to-navy text-beige px-6 md:px-16 py-16 md:py-24 flex flex-col gap-10 md:gap-14">
-    <div data-reveal class="flex flex-col gap-5 max-w-2xl">
-      <span class="inline-flex w-fit items-center gap-2 bg-gradient-to-r from-flash to-[#FF2D6B] text-white text-xs font-semibold tracking-[2px] uppercase px-4 py-1.5 rounded-full">Asesoría online</span>
-      <h2 id="online-title" class="font-serif text-2xl md:text-4xl font-semibold leading-tight text-beige"></h2>
-      <p id="online-description" class="text-base leading-relaxed text-beige/75"></p>
+    <div data-reveal class="grid md:grid-cols-2 gap-8 md:gap-14 items-center">
+      <div class="flex flex-col gap-5 max-w-xl">
+        <span class="inline-flex w-fit items-center gap-2 bg-gradient-to-r from-flash to-[#FF2D6B] text-white text-xs font-semibold tracking-[2px] uppercase px-4 py-1.5 rounded-full">Asesoría online</span>
+        <h2 id="online-title" class="font-serif text-2xl md:text-4xl font-semibold leading-tight text-beige"></h2>
+        <p id="online-description" class="text-base leading-relaxed text-beige/75"></p>
+      </div>
+      <div class="relative rounded-3xl overflow-hidden aspect-[4/5] max-h-[560px] w-full max-w-[460px] mx-auto md:mx-0 md:ml-auto shadow-2xl">
+        <img src="img/fotos/online-alumna.jpg" alt="Daiana corrigiendo la técnica de una alumna en el gimnasio" loading="lazy" class="w-full h-full object-cover" style="object-position:50% 40%" />
+        <span class="absolute left-4 bottom-4 bg-black/45 backdrop-blur-sm text-beige text-[12.5px] px-3.5 py-1.5 rounded-full">Acompañamiento personalizado</span>
+      </div>
     </div>
 
     <!-- Planes (se generan desde js/database.js > onlineCoaching.plans) -->
@@ -197,6 +203,13 @@
       <p id="presencial-description" class="text-base leading-relaxed text-navy/70"></p>
     </div>
 
+    <!-- Fotos del gimnasio -->
+    <div data-reveal class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+      <img src="img/fotos/gym-smith.jpg" alt="Daiana entrenando a una alumna en Fortress Gym" loading="lazy" class="col-span-2 md:col-span-1 w-full aspect-[4/3] md:aspect-[3/4] object-cover rounded-3xl" style="object-position:50% 45%" />
+      <img src="img/fotos/gym-jalon.jpg" alt="Daiana en el jalón al pecho" loading="lazy" class="w-full aspect-[3/4] object-cover rounded-3xl md:mt-8" />
+      <img src="img/fotos/gym-sentadilla.jpg" alt="Daiana en la sentadilla" loading="lazy" class="w-full aspect-[3/4] object-cover rounded-3xl" />
+    </div>
+
     <!-- Mismos planes que Online, pero SIN precio: se consulta con Daiana (se generan desde js/database.js) -->
     <div id="presencial-plans" class="grid md:grid-cols-3 gap-5 md:gap-6 items-stretch"></div>
 
@@ -226,7 +239,7 @@
   <section id="sobre-mi" class="bg-[#0D1520] text-beige">
     <!-- Banner panorámico -->
     <div class="relative h-[400px] md:h-[520px] overflow-hidden">
-      <img id="story-hero-img" src="img/fotos/retrato.jpg" alt="Daiana Sanson" class="absolute inset-0 w-full h-full object-cover" style="object-position:50% 13%" />
+      <img id="story-hero-img" src="img/fotos/historia-banner.jpg" alt="Daiana Sanson" class="absolute inset-0 w-full h-full object-cover" style="object-position:50% 12%" />
       <div class="absolute inset-0 bg-gradient-to-r from-[#0D1520] via-[#0D1520]/55 to-transparent"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-[#0D1520] via-transparent to-[#0D1520]/60"></div>
       <div class="film-vignette absolute inset-0 pointer-events-none"></div>
