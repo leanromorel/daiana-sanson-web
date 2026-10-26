@@ -141,15 +141,20 @@ const DB = {
     currency: "ARS",
     description:
       "Mi asesoría online está diseñada para acompañarte de manera personalizada a alcanzar tus objetivos, mejorar tu rendimiento y sentirte mejor.",
+    // Aclaración que se muestra debajo de los planes (precios en dólares).
+    usdNote: "Pagos en pesos por Mercado Pago. Pagos en dólares: consultá por WhatsApp.",
     // Planes. "id" se usa también en api/create-preference.js (ahí están los
-    // precios que realmente se cobran): si cambia un precio, cambiarlo en los
-    // dos archivos. "monthlyEquivalent" es solo el texto de "equivale a".
+    // precios que realmente se cobran, en pesos): si cambia un precio en
+    // pesos, cambiarlo en los dos archivos. "monthlyEquivalent" es solo el
+    // texto de "equivale a". Los campos "...Usd" son los precios en dólares
+    // que se muestran como referencia (no se cobran desde la web).
     plans: [
       {
         id: "start",
         tag: "Plan mensual",
         name: "Plan Start",
         price: 70000,
+        priceUsd: 60,
         period: "por mes",
         intro: "Ideal para quienes quieren probar la asesoría y empezar a trabajar mes a mes.",
         includesLead: "Incluye:",
@@ -168,8 +173,10 @@ const DB = {
         tag: "Plan trimestral",
         name: "Plan Pro",
         price: 195000,
+        priceUsd: 130,
         period: "cada 3 meses",
         monthlyEquivalent: 65000,
+        monthlyEquivalentUsd: 43,
         featured: true, // lleva la etiqueta "Recomendado"
         intro: "Un proceso progresivo de 3 meses, con seguimiento más completo.",
         includesLead: "Incluye todo lo del Plan Start, más:",
@@ -186,8 +193,10 @@ const DB = {
         tag: "Plan anual",
         name: "Plan Premium",
         price: 660000,
+        priceUsd: 430,
         period: "por 12 meses",
         monthlyEquivalent: 55000,
+        monthlyEquivalentUsd: 36,
         intro: "Acompañamiento todo el año, con planificación a largo plazo.",
         includesLead: "Incluye todo lo del Plan Pro, más:",
         includes: [
