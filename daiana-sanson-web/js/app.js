@@ -182,6 +182,17 @@ function renderOnlineCoaching() {
   setText("online-closing", d.closingNote);
 
   renderPlanCards("online-plans", "online", "dark");
+
+  // Aclaración de precios en dólares, justo debajo de los planes.
+  const plansEl = document.getElementById("online-plans");
+  if (plansEl && d.usdNote && !document.getElementById("online-usd-note")) {
+    const note = document.createElement("p");
+    note.id = "online-usd-note";
+    note.className = "text-[13px] text-beige/55 -mt-4 md:-mt-6";
+    note.textContent = d.usdNote;
+    plansEl.insertAdjacentElement("afterend", note);
+  }
+
   setupPaidButton("whatsapp-online-btn", "online");
 }
 
@@ -212,13 +223,19 @@ function renderPlanCards(containerId, mode, theme) {
         ? "bg-white text-navy hover:-translate-y-0.5"
         : "bg-gradient-to-r from-flash to-[#FF2D6B] text-white shadow-[0_10px_28px_-6px_rgba(255,45,107,0.55)] hover:-translate-y-0.5";
       const consult = mode === "presencial"; // presencial: sin precio, se consulta
+      const equivUsd = plan.monthlyEquivalentUsd ? ` · ≈ ${formatUsd(plan.monthlyEquivalentUsd)}` : "";
       const equiv = !consult && plan.monthlyEquivalent
-        ? `<span class="text-sm ${soft}">Equivale a ${formatCurrency(plan.monthlyEquivalent, d.currency)} por mes</span>`
+        ? `<span class="text-sm ${soft}">Equivale a ${formatCurrency(plan.monthlyEquivalent, d.currency)} por mes${equivUsd}</span>`
+        : "";
+      const usdPillColors = featured ? "bg-white/20 text-white" : "bg-sky/15 text-sky";
+      const usd = !consult && plan.priceUsd
+        ? `<span class="inline-flex w-fit items-center rounded-full px-3.5 py-1 text-[15px] font-semibold ${usdPillColors}">${formatUsd(plan.priceUsd)}</span>`
         : "";
       const priceBlock = consult
         ? `<div class="flex flex-col gap-1"><span class="font-serif text-2xl font-semibold">Consultá el valor</span><span class="text-sm ${soft}">${escapeHtml(plan.period)} · el precio lo coordinamos por WhatsApp</span></div>`
         : `<div class="flex flex-col gap-1">
           <span class="font-serif text-4xl font-semibold">${formatCurrency(plan.price, d.currency)}</span>
+          ${usd}
           <span class="text-sm ${soft}">${escapeHtml(plan.period)}</span>
           ${equiv}
         </div>`;
@@ -502,6 +519,11 @@ function formatCurrency(amount, currency) {
   } catch {
     return `$${amount}`;
   }
+}
+
+// Precio en dólares, siempre con el mismo formato: "US$ 60".
+function formatUsd(amount) {
+  return `US$ ${amount}`;
 }
 
 function buildWhatsappLink(number, message) {
