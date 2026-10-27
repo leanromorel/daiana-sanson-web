@@ -241,7 +241,7 @@ function renderPlanCards(containerId, mode, theme) {
         </div>`;
       const ctaHref = consult
         ? buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildIntakeWhatsappMessage(`la Asesoría Presencial (${plan.name})`, DB.intakeForm.presencial))
-        : `/api/create-preference?plan=${escapeAttr(plan.id)}`;
+        : "#pagar";
       const ctaTarget = consult ? ' target="_blank" rel="noopener"' : "";
       const ctaLabel = consult ? "Consultar precio por WhatsApp" : `Elegir ${escapeHtml(plan.name)}`;
       // En presencial el precio se consulta, así que no mostramos "precio congelado".
@@ -276,10 +276,113 @@ function renderPlanCards(containerId, mode, theme) {
   // Al tocar "Elegir", recordamos qué plan eligió la persona (así el botón
   // "Ya pagué" lo menciona en el WhatsApp).
   el.querySelectorAll(".plan-pay-btn").forEach((a) => {
-    a.addEventListener("click", () => {
+    a.addEventListener("click", (ev) => {
       try { sessionStorage.setItem("chosenPlan:" + mode, a.dataset.planId); } catch (e) {}
+      // Online: se abre la ventana con los datos para transferir (sin link de cobro).
+      if (mode === "online") {
+        ev.preventDefault();
+        openPayModal(a.dataset.planId);
+      }
     });
   });
+}
+
+// ------------------------------------------------------------------
+// Ventana de pago por transferencia (Asesoría online).
+// No usa link de cobro de Mercado Pago (que cobra comisión): muestra el
+// monto, el alias y el CVU para copiar, y la persona transfiere desde
+// su app de Mercado Pago o su banco.
+// ------------------------------------------------------------------
+function openPayModal(planId) {
+  const d = DB.onlineCoaching;
+  const plan = ((d && d.plans) || []).find((p) => p.id === planId);
+  if (!plan) return;
+
+  const mp = ((DB.paymentMethods && DB.paymentMethods.options) || []).find((o) => /mercado/i.test(o.method)) || {};
+  const waHref = buildWhatsappLink(DB.trainerInfo.whatsappNumber, buildPaidWhatsappMessage("online", plan.name));
+
+  closePayModal();
+  const wrap = document.createElement("div");
+  wrap.id = "pay-modal";
+  wrap.className = "fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 backdrop-blur-sm";
+  wrap.setAttribute("role", "dialog");
+  wrap.setAttribute("aria-modal", "true");
+
+  const row = (label, value, copyValue, big) => `
+    <div class="flex items-center justify-between gap-3 rounded-2xl bg-white/[0.07] px-4 py-3">
+      <div class="min-w-0">
+        <span class="block text-xs text-beige/60 mb-0.5">${escapeHtml(label)}</span>
+        <span class="${big ? "font-serif text-[26px] md:text-3xl" : "text-[16px]"} font-semibold break-all">${escapeHtml(value)}</span>
+      </div>
+      <button type="button" data-copy="${escapeAttr(copyValue)}" class="shrink-0 rounded-full border border-azalea/50 text-azalea text-[13px] font-semibold px-4 py-1.5 hover:bg-azalea hover:text-navy transition-colors">Copiar</button>
+    </div>`;
+
+  wrap.innerHTML = `
+    <div class="relative w-full md:w-[470px] max-h-[94vh] overflow-y-auto rounded-t-[28px] md:rounded-[28px] bg-[#22324A] text-beige border border-white/10 p-5 md:p-8 flex flex-col gap-3 md:gap-4 shadow-2xl">
+      <button type="button" id="pay-modal-close" aria-label="Cerrar" class="absolute top-4 right-5 text-beige/60 hover:text-beige text-xl leading-none">✕</button>
+      <div>
+        <span class="text-xs font-semibold tracking-[2px] uppercase text-beige/60">${escapeHtml(plan.tag)}</span>
+        <h3 class="font-serif text-2xl font-semibold">${escapeHtml(plan.name)}</h3>
+      </div>
+      ${row("Monto a transferir", formatCurrency(plan.price, d.currency), String(plan.price), true)}
+      ${plan.priceUsd ? `<p class="text-[13px] text-beige/60 -mt-1">Equivale a ${formatUsd(plan.priceUsd)}</p>` : ""}
+      ${mp.alias ? row("Alias", mp.alias, mp.alias, false) : ""}
+      ${mp.cvu ? row("CVU", mp.cvu, mp.cvu, false) : ""}
+      <ol class="list-decimal pl-5 text-[13.5px] md:text-[14px] leading-relaxed text-beige/85">
+        <li>Abrí Mercado Pago (o tu banco) y elegí <b>Transferir</b>.</li>
+        <li>Pegá el alias y escribí el monto.</li>
+        <li>Después mandame el comprobante por WhatsApp.</li>
+      </ol>
+      <a href="https://www.mercadopago.com.ar" target="_blank" rel="noopener" class="rounded-full bg-gradient-to-r from-flash to-[#FF2D6B] text-white text-center font-semibold py-3.5 shadow-[0_10px_28px_-6px_rgba(255,45,107,0.55)]">Abrir Mercado Pago</a>
+      <p class="text-[13px] text-beige/65 text-center leading-snug -mb-1">Cuando transfieras, tocá acá, completá el formulario y adjuntá el comprobante.</p>
+      <a href="${waHref}" target="_blank" rel="noopener" class="rounded-full border-[1.5px] border-beige/40 text-beige text-center font-semibold py-3 text-[15px] hover:bg-beige hover:text-navy transition-colors">Ya transferí, continuar por WhatsApp</a>
+    </div>`;
+
+  document.body.appendChild(wrap);
+  document.body.style.overflow = "hidden";
+
+  wrap.addEventListener("click", (ev) => { if (ev.target === wrap) closePayModal(); });
+  wrap.querySelector("#pay-modal-close").addEventListener("click", closePayModal);
+  wrap.querySelectorAll("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", () => copyText(btn.dataset.copy, btn));
+  });
+  document.addEventListener("keydown", onPayModalKey);
+}
+
+function onPayModalKey(ev) {
+  if (ev.key === "Escape") closePayModal();
+}
+
+function closePayModal() {
+  const m = document.getElementById("pay-modal");
+  if (m) m.remove();
+  document.body.style.overflow = "";
+  document.removeEventListener("keydown", onPayModalKey);
+}
+
+// Copia al portapapeles y avisa en el mismo botón ("¡Copiado!").
+function copyText(text, btn) {
+  const done = () => {
+    const old = btn.textContent;
+    btn.textContent = "¡Copiado!";
+    setTimeout(() => { btn.textContent = old; }, 1500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+
+function fallbackCopy(text, done) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); done(); } catch (e) {}
+  ta.remove();
 }
 
 // Botón "Ya pagué, continuar por WhatsApp": arma el mensaje con el plan
