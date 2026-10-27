@@ -143,10 +143,8 @@ const DB = {
       "Mi asesoría online está diseñada para acompañarte de manera personalizada a alcanzar tus objetivos, mejorar tu rendimiento y sentirte mejor.",
     // Aclaración que se muestra debajo de los planes (precios en dólares).
     usdNote: "Pagos en pesos por Mercado Pago. Pagos en dólares: consultá por WhatsApp.",
-    // Planes. "id" se usa también en api/create-preference.js (ahí están los
-    // precios que realmente se cobran, en pesos): si cambia un precio en
-    // pesos, cambiarlo en los dos archivos. "monthlyEquivalent" es solo el
-    // texto de "equivale a". Los campos "...Usd" son los precios en dólares
+    // Planes. "price" es el monto en pesos que se muestra y que la persona
+    // transfiere. "monthlyEquivalent" es solo el texto de "equivale a". Los campos "...Usd" son los precios en dólares
     // que se muestran como referencia (no se cobran desde la web).
     plans: [
       {
@@ -217,13 +215,8 @@ const DB = {
       "Mi objetivo es que no tengas que entrenar a ciegas: vas a contar con un plan, seguimiento y acompañamiento para avanzar de forma efectiva y sostenible. 💖",
     faq: [], // TODO: [{ question, answer }]
 
-    // TODO: pegar acá el "Link de cobro" generado desde la cuenta de Mercado
-    // Pago de Daiana (Tu negocio > Cobros > Crear link de pago, por $65.000).
-    // En cuanto se completa, en la sección de Asesoría Online aparece un
-    // botón "Pagar con Mercado Pago" que abre ese link directo — la persona
-    // paga con un clic y a Daiana le llega la notificación con su nombre,
-    // sin necesidad de nada más de nuestro lado (eso ya lo maneja Mercado Pago).
-    mercadoPagoLink: "https://mpago.la/3336YAs",
+    // El pago de la asesoría online es por transferencia al alias/CVU de
+    // Mercado Pago (datos en paymentMethods): no se usa link de cobro.
   },
 
   // ------------------------------------------------------------------
